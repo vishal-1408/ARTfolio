@@ -19,7 +19,7 @@ app.use(express({
   saveUnintialized:false
 }));
 
-app.use(passport.initialze());
+app.use(passport.initialize());
 app.use(passport.session());
 
 mongoose.set("useCreateIndex",true);
@@ -70,13 +70,13 @@ app.post("/login",(req,res)=>{
     })
 });
 
-app.get("/artfolio",(req,res=>{
+app.get("/artfolio",(req,res)=>{
   if(req.isAuthenticated()) {
     res.render("index",{user:req.user});
   }else{
     res.redirect("/login");
   }
-}))
+});
 
 
 
