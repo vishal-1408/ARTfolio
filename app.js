@@ -3,7 +3,6 @@ const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const passport = require("passport");
-const passportLocalMongoose = require("passport-local-mongoose");
 const session = require("express-session");
 const User = require("./models/user.js");
 const Post = require("./models/post.js");
@@ -14,9 +13,71 @@ app.use(express.static(__dirname+"/public"));
 app.use(bodyParser.urlencoded({extend:true}));
 app.set("view engine","ejs");
 
+app.use(express({
+  secret:process.env.SECRET,
+  resave:false,
+  saveUnintialized:false
+}));
+
+app.use(passport.initialze());
+app.use(passport.session());
+
+mongoose.set("useCreateIndex",true);
+mongoose.set("useUnifiedTopology",true);
+mongoose.set("useNewUrlParser",true);
+mongoose.connect("mongodb://localhost/artfolio");
+
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
 app.get("/",(req,res)=>{
   res.render("landing");
 });
+
+app.get("/login",(req,res)=>{
+  res.render("login");
+})
+
+app.get("/register",(req,res)=>{
+  res.render("register");
+})
+
+app.post("/register",(req,res)=>{
+  User.register({username: req.body.user.username},req.body.user.password,(err,sol)=>{
+    if(err) {
+      // console.log(err);
+      // res.send(err+"<div><a src=\"/register\">Register Again</a></div>");
+      res.redirect("/register");
+    }else{
+      passport.authenticate("local")(req,res,()=>{
+        res.redirect("/artfolio");
+      });
+    }
+  })
+})
+app.post("/login",(req,res)=>{
+  var user = req.body.user;
+    req.login(user,(e,s)=>{
+      if(e) {
+        res.redirect("/login");
+      }else{
+        passport.authenticate("local")(req,res,()=>{
+          res.redirect("/artfolio");
+        })
+      }
+    })
+});
+
+app.get("/artfolio",(req,res=>{
+  if(req.isAuthenticated()) {
+    res.render("index",{user:req.user});
+  }else{
+    res.redirect("/login");
+  }
+}))
+
 
 
 
