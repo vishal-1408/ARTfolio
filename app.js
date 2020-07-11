@@ -7,7 +7,7 @@ const session = require("express-session");
 const User = require("./models/user.js");
 const Post = require("./models/post.js");
 const Bio = require("./models/bio.js");
-
+const seeds = require("./seed.js");
 
 app.use(express.static(__dirname+"/public"));
 app.use(bodyParser.urlencoded({extend:true}));
@@ -27,10 +27,16 @@ mongoose.set("useUnifiedTopology",true);
 mongoose.set("useNewUrlParser",true);
 mongoose.connect("mongodb://localhost/artfolio");
 
+seeds();
+
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use(function(req,res,next){
+  res.locals.user = req.user;
+  next();
+})
 
 app.get("/",(req,res)=>{
   res.render("landing");
@@ -71,11 +77,18 @@ app.post("/login",(req,res)=>{
 });
 
 app.get("/artfolio",(req,res)=>{
-  if(req.isAuthenticated()) {
-    res.render("index",{user:req.user});
-  }else{
-    res.redirect("/login");
-  }
+  // if(req.isAuthenticated()) {
+  User.findOne({username:"vishalreddy"}).populate("bio").populate("post").exec((e,s)=>{
+    if(e) console.log(e);
+    else{
+      res.render("index",{user:s});
+    }
+
+  })
+
+  // }else{
+  //   res.redirect("/login");
+  // }
 });
 
 

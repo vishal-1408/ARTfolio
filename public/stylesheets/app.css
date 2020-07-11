@@ -1,0 +1,41 @@
+img{
+  border-radius:50%;
+  height:17vw;
+}
+
+body{
+  background: #FC5C7D;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #6A82FB, #FC5C7D);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.one{
+  background:white;
+  border-radius: 10px;
+    box-shadow: 3px 3px 30px rgba(0, 0, 0, 0.7);
+}
+
+.three{
+  background:white;
+  border-radius: 10px;
+    box-shadow: 3px 3px 30px rgba(0, 0, 0, 0.7);
+}
+
+#n{
+ background: transparent;
+}
+
+#two{
+  width:80%;
+  box-sizing: border-box;
+}
+
+#btwo,#bone{
+  margin-top:100px;;
+  font-size: 1.5vw;
+}
+
+#bbtn{
+   width:7vw;
+   display: block;
+}
