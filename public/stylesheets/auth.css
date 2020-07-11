@@ -1,0 +1,71 @@
+body{
+  background: #FC5C7D;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #6A82FB, #FC5C7D);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.inside{
+  background: white;
+  margin-top:6vw;
+  border-radius: 10px;
+  box-shadow: 3px 3px 30px rgba(0, 0, 0, 0.7);
+  width:40%;
+  margin-left:30%;
+  margin-right:30%;
+
+}
+
+.inside label{
+  font-size:15px;
+  color:#515050;
+  text-transform: bold;
+}
+
+.inside .form-group{
+  width:60%;
+  margin-left:20%;
+  margin-right:20%;
+}
+
+.inside .one{
+  margin-top:3vw;
+}
+
+.inside .two{
+  margin-top:1vw;
+  margin-bottom: 4vw;
+}
+.inside button{
+  background: #FC5C7D;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #6A82FB, #FC5C7D);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  width:75%;
+  border-radius: 10px;
+  margin-left:12.5%;
+  margin-right: 12.5%;
+  margin-bottom:2vw;
+}
+
+.inside h1{
+  text-align: center;
+}
+
+#n{
+  background: #FC5C7D;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #6A82FB, #FC5C7D);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+#left{
+  margin-left:1vw;
+}
+
+#right{
+  margin-right:2vw;
+}
+#right .nav-item{
+  margin-right:1vw;
+}
