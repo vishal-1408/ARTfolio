@@ -1,70 +1,104 @@
 <%- include("partials/header") %>
 
-<div class="container one mt-4">
- <div class="container mt-3" id="two">
-   <% if(!user.bio){ %>
-     <div class="text-center">
-           <h4 class="mt-5">Your Bio is empty!!! Give an identtity for your Portfolio</h4>
-           <a href="/artfolio/<%=user._id%>/bio/new" class="btn btn-large btn-outline-primary mt-5">Add bio</a>
-     </div>
-   <% } else{ %>
+<div class="container mt-2 mb-4" id="main">
+  <div class="container one mt-4">
+   <div class="container mt-3" id="two">
+     <% if(!user.bio){ %>
+       <div class="text-center">
+             <h4 class="mt-5">Your Bio is empty!!! Give an identtity for your Portfolio</h4>
+             <a href="/artfolio/<%=user._id%>/bio/new" class="btn btn-large btn-outline-primary mt-5">Add bio</a>
+       </div>
+     <% } else{ %>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="bioimage my-4">
+              <img src="<%=user.bio.src%>" alt="profile pic" >
+            </div>
+          </div>
+          <div class="col-sm-8 my-2">
+            <div class="row mt-4">
+              <div class="col-sm-12">
+                <h2 class="display-4"><%=user.bio.name%></h2>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 mt-2 ml-2">
+                <p><%=user.bio.desc%></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-3 mt-1 ml-2">
+                <i class="fas fa-mobile-alt"></i> <%=user.bio.phone%>
+              </div>
+              <div class="col-sm-7 mt-1">
+                <i class="far fa-envelope"></i> <%=user.bio.email%>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-1 mt-3 ml-2" id="bone">
+                <a href="<%=user.bio.fb%>" class="text-reset"><i class="fab fa-facebook-f"></i></a>
+              </div>
+              <div class="col-sm-1 mt-3" id="btwo">
+                <a href="<%=user.bio.insta%>" class="text-reset"><i class="fab fa-instagram"></i></i></a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 mt-2 d-flex justify-content-end">
+                 <a href="#" class="btn btn-sm btn-outline-primary" id="bbtn">Edit Bio</a>
+              </div>
+            </div>
+          </div>
+        </div>
+     <% } %>
+   </div>
+
+
+
+  </div>
+    <hr>
+    <div class="container mb-3">
       <div class="row">
-        <div class="col-sm-4">
-          <div class="image my-4">
-            <img src="<%=user.bio.src%>" alt="profile pic" >
-          </div>
+        <div class="col-sm-12 d-flex justify-content-around">
+          <p><i class="fas fa-share-square"></i> /artfolio/<%=user._id%>/work</p>
+          <a href="/artfolio/<%=user._id%>/work" class="btn btn-large btn-primary">Preview</a>
+          <a href="/artfolio/<%=user._id%>/posts/new" class="btn btn-large btn-success">Add a new work</a>
         </div>
-        <div class="col-sm-8 my-2">
-          <div class="row mt-4">
-            <div class="col-sm-12">
-              <h2 class="display-4"><%=user.bio.name%></h2>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-6 mt-2 ml-2">
-              <p><%=user.bio.desc%></p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-3 mt-1 ml-2">
-              <i class="fas fa-mobile-alt"></i> <%=user.bio.phone%>
-            </div>
-            <div class="col-sm-7 mt-1">
-              <i class="far fa-envelope"></i> <%=user.bio.email%>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-1 mt-3 ml-2" id="bone">
-              <a href="<%=user.bio.fb%>" class="text-reset"><i class="fab fa-facebook-f"></i></a>
-            </div>
-            <div class="col-sm-1 mt-3" id="btwo">
-              <a href="<%=user.bio.insta%>" class="text-reset"><i class="fab fa-instagram"></i></i></a>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12 mt-2 d-flex justify-content-end">
-               <a href="#" class="btn btn-sm btn-outline-primary" id="bbtn">Edit Bio</a>
-            </div>
-          </div>
-        </div>
-      </div>
-   <% } %>
- </div>
-
-
-
-</div>
-  <hr>
-  <div class="container mb-3">
-    <div class="row">
-      <div class="col-sm-11 d-flex justify-content-end">
-        <a href="#" class="btn btn-large btn-success">Add a new work</a>
       </div>
     </div>
-  </div>
-<div class="container three">
-  posts
+  <div class="container three">
+    <div class="rowgrid">
+      <% for(var i=0;i<=2;i++){%>
+        <div class="column">
+        <%  for(var j=i;j<=user.post.length-1;j+=3){ %>
+          <div class="i">
+            <img src="<%=user.post[j].src%>" alt="image-<%=i%>">
+            <div class="overlay">
+               <div class="text">
+               <h3 class="mb-2"><%=user.post[j].title%></h3>
+               decription: <p><%=user.post[j].src%></p>
+               <div class="row">
+                 <div class="col-sm-3">
+                   <form class="" action="/artfolio/<%=user._id%>/posts/<%=user.post[j]._id%>?_method=DELETE" method="post">
+                       <button class="btn btn-sm btn-danger">DELETE</button>
+                   </form>
+                 </div>
+                 <div class="col-sm-9">
+                      <a href="/artfolio/<%=user._id%>/posts/<%=user.post[j]._id%>/edit" class="btn btn-sm btn-success">EDIT</a>
+                 </div>
+               </div>
+             </div>
+            </div>
+          </div>
+        <%}%>
+        </div>
 
+
+
+  <%    }%>
+
+    </div>
+
+  </div>
 </div>
 
 

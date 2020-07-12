@@ -1,4 +1,10 @@
-img{
+@use "@material/image-list";
+
+.my-image-list {
+  @include image-list.standard-columns(3);
+}
+
+.bioimage img{
   border-radius:50%;
   height:17vw;
 }
@@ -38,4 +44,96 @@ background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, F
 #bbtn{
    width:7vw;
    display: block;
+}
+
+/* image gallery css --important  */
+.rowgrid{
+  display:flex;
+  flex-wrap: wrap;
+  padding: 1vw 0.1vw;
+
+}
+
+.column {
+  flex: 25%;
+  max-width: 33.33%;
+  padding: 0 4px;
+}
+
+.column img {
+  margin-top: 8px;
+  vertical-align: middle;
+  width: 100%;
+}
+
+@media screen and (max-width: 800px) {
+  .column {
+    flex: 50%;
+    max-width: 50%;
+  }
+}
+
+
+@media screen and (max-width: 600px) {
+  .column {
+    flex: 100%;
+    max-width: 100%;
+  }
+}
+.i {
+  position: relative;
+  width: 100%;
+}
+
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background: #C6FFDD;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #f7797d, #FBD786, #C6FFDD);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #f7797d, #FBD786, #C6FFDD); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.i:hover .overlay {
+  opacity: 1;
+}
+
+.text {
+  color: white;
+  font-size: 15px;
+  position: absolute;
+  padding-top: 5px;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  padding-left: 5%;
+  padding-right: 5%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  width:100%;
+  color:black;
+
+}
+.text h3{
+  text-align: center;
+}
+
+#main{
+  width:75%;
 }
