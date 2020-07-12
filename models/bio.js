@@ -7,7 +7,8 @@ var bioSchema = new mongoose.Schema({
   fb: String,
   insta: String,
   email: String,
-  phone: String
+  phone: String,
+  key:String
 });
 
 var Bio = mongoose.model("Bio",bioSchema);

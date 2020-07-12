@@ -102,7 +102,7 @@ function seeds(){
                    s.forEach((sl)=>{
                      sl.save((r,q)=>{
                        if(e) console.log(r);
-                       else console.log(q);
+                       // else console.log(q);
                      });
                    })
 
