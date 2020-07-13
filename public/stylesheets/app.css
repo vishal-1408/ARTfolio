@@ -139,3 +139,13 @@ background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, F
 .text h3{
   text-align: center;
 }
+
+.special{
+  text-decoration: none;
+  color:black;
+}
+
+.special:hover{
+    text-decoration: none;
+    color:grey;
+}
