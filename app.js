@@ -246,7 +246,7 @@ app.patch("/artfolio/:id/bio",authenticated,upload.single("image"),(req,res)=>{
   })
 });
 
-app.get("/artfolio/:id/work",(req,res)=>{
+app.get("/:id/work",(req,res)=>{
   Bio.findOne({userId:req.params.id},(e,s)=>{
     if(e) console.log(e);
     else{
