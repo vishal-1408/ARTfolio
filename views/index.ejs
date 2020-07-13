@@ -74,8 +74,8 @@
             <img src="<%=user.post[j].src%>" alt="image-<%=i%>">
             <div class="overlay">
                <div class="text">
-               <h3 class="mb-2"><%=user.post[j].title%></h3>
-               decription: <p><%=user.post[j].desc%></p>
+               <h3 class="mb-2"><%-user.post[j].title%></h3>
+               decription: <p><%-user.post[j].desc%></p>
                <div class="row">
                  <div class="col-sm-3">
                    <form action="/artfolio/<%=user.id %>/posts/<%=user.post[j].id%>?_method=DELETE" method="post">

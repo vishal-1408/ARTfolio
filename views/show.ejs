@@ -52,7 +52,7 @@
             </div>
             <div class="row">
               <div class="col-sm-12 mt-2 ml-2 word">
-                <p><%=user.bio.desc%></p>
+                <p><%-user.bio.desc%></p>
               </div>
             </div>
             <div class="row">
@@ -87,8 +87,8 @@
             <img src="<%=user.post[j].src%>" alt="image-<%=i%>">
             <div class="overlay">
                <div class="text">
-               <h3 class="mb-2"><%=user.post[j].title%></h3>
-               decription: <p><%=user.post[j].desc%></p>
+               <h3 class="mb-2"><%-user.post[j].title%></h3>
+               decription: <p><%-user.post[j].desc%></p>
              </div>
             </div>
           </div>
