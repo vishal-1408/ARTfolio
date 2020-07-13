@@ -17,10 +17,6 @@ background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, F
     box-shadow: 3px 3px 30px rgba(0, 0, 0, 0.7);
 }
 
-#one{
-  margin-bottom:3vw;
-}
-
 .three{
   background:white;
   border-radius: 10px;

@@ -22,18 +22,12 @@
       </li>
     </ul>
       <ul class="navbar-nav ml-auto" id="right">
-           <% if(user){%>
-             <li class="nav-item">
-                 <a class="nav-link" href="#">Logged in as <%=req.user.username%> </a>
-             </li>
-            <%}else{%>
                 <li class="nav-item">
                 <a class="nav-link" href="/login">Login</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/register">SignUp</a>
               </li>
-              <% } %>
        </ul>
   </div>
 </nav>
@@ -42,14 +36,14 @@
         <h1>Register</h1>
         <hr>
         <div class="container">
-          <form method="post" action="/login">
+          <form method="post" action="/register">
             <div class="form-group one">
               <label for="u"> <i class="fas fa-user"></i>  Username</label>
-              <input id="u" placeholder="Enter you username" class="form-control" type="text" required>
+              <input id="u" placeholder="Enter you username" class="form-control" type="text" name="username" required>
           </div>
             <div class="form-group two">
                 <label for="p"> <i class="fas fa-key"></i>  Password</label>
-              <input placeholder="Enter you password" class="form-control" id="p" type="password" required>
+              <input placeholder="Enter you password" class="form-control" id="p" type="password" name="password" required>
           </div>
           <div class="row">
             <button class="btn">Submit</button>

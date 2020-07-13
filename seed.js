@@ -84,38 +84,11 @@ function seeds(){
        if(er) console.log(er);
        Post.deleteMany({},(err)=>{
          if(err) console.log(err);
-         User.insertMany(userData,(ue,s)=>{
-           if(ue) console.log(ue);
-           else{
-             Post.insertMany(posts,(eror,so)=>{
-             if(eror) console.log(eror);
-             else{
-               Bio.insertMany(bioData,(be,sol)=>{
-                 if(be) console.log(be);
-                 else{
-                   for(var i=0;i<=2;i++){
-                     s[i].bio = sol[i];
-                     for(var j=0;j<=4;j++){
-                       s[i].post.push(so[j])
-                     }
-                   }
-                   s.forEach((sl)=>{
-                     sl.save((r,q)=>{
-                       if(e) console.log(r);
-                       // else console.log(q);
-                     });
-                   })
-
-                 }
-               })
-             }
-           })}
 
          })
        })
      })
-   });
-}
+   };
 
 
 module.exports = seeds;

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+var mongoose = require("mongoose");
 
 var bioSchema = new mongoose.Schema({
   src: String,
@@ -8,7 +8,8 @@ var bioSchema = new mongoose.Schema({
   insta: String,
   email: String,
   phone: String,
-  key:String
+  key:String,
+  userId:String
 });
 
 var Bio = mongoose.model("Bio",bioSchema);

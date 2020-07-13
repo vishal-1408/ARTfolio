@@ -1,11 +1,11 @@
 <%- include("partials/header") %>
-<div class="container mt-2 mb-4" id="main">
+<div class="container mt-2 mb-5" id="main">
   <div class="container one mt-4">
    <div class="container mt-3 ml-4" id="two">
      <% if(!user.bio){ %>
        <div class="text-center">
              <h4 class="mt-5">Your Bio is empty!!! Give an identtity for your Portfolio</h4>
-             <a href="/artfolio/<%=user._id%>/bio/new" class="btn btn-large btn-outline-primary mt-5">Add bio</a>
+             <a href="/artfolio/<%=user.id%>/bio/new" class="btn btn-large btn-outline-primary mt-5">Add bio</a>
        </div>
      <% } else{ %>
         <div class="row">
@@ -14,15 +14,15 @@
               <img src="<%=user.bio.src%>" alt="profile pic" >
             </div>
           </div>
-          <div class="col-sm-8 my-2">
+          <div class="col-sm-8 my-2 ">
             <div class="row mt-4">
               <div class="col-sm-12">
                 <h2 class="display-4"><%=user.bio.name%></h2>
               </div>
             </div>
             <div class="row">
-              <div class="col-sm-12 mt-2 ml-2">
-                <p><%=user.bio.desc%></p>
+              <div class="col-sm-12 mt-2 ml-2 word">
+                <p><%-user.bio.desc%></p>
               </div>
             </div>
             <div class="row">
@@ -43,7 +43,7 @@
             </div>
             <div class="row">
               <div class="col-sm-11 mt-2 d-flex justify-content-end">
-                 <a href="/artfolio/<%=user._id%>/bio/edit" class="btn btn-sm btn-outline-primary" id="bbtn">Edit Bio</a>
+                 <a href="/artfolio/<%=user.id%>/bio/edit" class="btn btn-sm btn-outline-primary" id="bbtn">Edit Bio</a>
               </div>
             </div>
           </div>
@@ -56,12 +56,12 @@
   </div>
       <hr>
   <%if(user.bio){%>
-    <div class="container mb-3">
+    <div class="container mb-3" id="down">
       <div class="row">
         <div class="col-sm-12 d-flex justify-content-around">
-          <p><i class="fas fa-share-square"></i> /artfolio/<%=user._id%>/work</p>
-          <a href="/artfolio/<%=user._id%>/work" class="btn btn-large btn-primary">Preview</a>
-          <a href="/artfolio/<%=user._id%>/posts/new" class="btn btn-large btn-success">Add a new work</a>
+          <p><i class="fas fa-share-square"></i> /artfolio/<%=user.id%>/work</p>
+          <a href="/artfolio/<%=user.id%>/work" class="btn btn-large btn-primary">Preview</a>
+          <a href="/artfolio/<%=user.id%>/posts/new" class="btn btn-large btn-success">Add a new work</a>
         </div>
       </div>
     </div>
@@ -78,12 +78,12 @@
                decription: <p><%=user.post[j].desc%></p>
                <div class="row">
                  <div class="col-sm-3">
-                   <form action="/artfolio/<%=user._id %>/posts/<%=user.post[j]._id%>?_method=DELETE" method="post">
+                   <form action="/artfolio/<%=user.id %>/posts/<%=user.post[j].id%>?_method=DELETE" method="post">
                        <button class="btn btn-sm btn-danger">DELETE</button>
                    </form>
                  </div>
                  <div class="col-sm-9">
-                      <a href="/artfolio/<%=user._id%>/posts/<%=user.post[j]._id%>/edit" class="btn btn-sm btn-success">EDIT</a>
+                      <a href="/artfolio/<%=user.id%>/posts/<%=user.post[j].id%>/edit" class="btn btn-sm btn-success">EDIT</a>
                  </div>
                </div>
              </div>

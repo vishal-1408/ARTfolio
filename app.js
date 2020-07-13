@@ -1,46 +1,46 @@
-const express = require("express");
-const app = express();
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
-const passport = require("passport");
-const session = require("express-session");
-const User = require("./models/user.js");
-const Post = require("./models/post.js");
-const Bio = require("./models/bio.js");
-const seeds = require("./seed.js");
-const upload = require("./utils/multer.js");
-const s3 = require("./utils/aws.js");
-const methodOverride = require("method-override");
+var express = require("express");
+var app = express();
+var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
+var passport = require("passport");
+var expressSession = require("express-session");
+var seeds = require("./seed.js");
+var upload = require("./utils/multer.js");
+var s3 = require("./utils/aws.js");
+var methodOverride = require("method-override");
+var dotenv = require("dotenv");
+var localStrategy = require("passport-local");
+var User = require("./models/user.js");
+var Post = require("./models/post.js");
+var Bio = require("./models/bio.js");
 
-app.use(express.static(__dirname+"/public"));
-app.use(bodyParser.urlencoded({extend:true}));
-app.set("view engine","ejs");
-app.use(methodOverride("_method"));
+dotenv.config();
 
-app.use(express({
-  secret:process.env.SECRET,
-  resave:false,
-  saveUnintialized:false
-}));
 
-app.use(passport.initialize());
-app.use(passport.session());
 
 mongoose.set("useCreateIndex",true);
 mongoose.set("useUnifiedTopology",true);
 mongoose.set("useNewUrlParser",true);
 mongoose.connect("mongodb://localhost/artfolio");
 
-seeds();
+app.use(bodyParser.urlencoded({extend:true}));
+app.set("view engine","ejs");
+app.use(express.static(__dirname+"/public"));
+app.use(methodOverride("_method"));
 
-passport.use(User.createStrategy());
+app.use(expressSession({
+  secret : "i am vishal reddy chintham",
+  resave : false,
+  saveUninitialized : false
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use(function(req,res,next){
-  res.locals.user = req.user;
-  next();
-})
 
 app.get("/",(req,res)=>{
   res.render("landing");
@@ -54,100 +54,81 @@ app.get("/register",(req,res)=>{
   res.render("register");
 })
 
-app.post("/register",(req,res)=>{
-  User.register({username: req.body.user.username},req.body.user.password,(err,sol)=>{
-    if(err) {
-      // console.log(err);
-      // res.send(err+"<div><a src=\"/register\">Register Again</a></div>");
+app.post("/register",function(req,res){
+  User.register(new User({username:req.body.username}),req.body.password,(err,sol)=>{
+    if(err){
+      console.log(err);
       res.redirect("/register");
-    }else{
+    }
+    else{
       passport.authenticate("local")(req,res,()=>{
         res.redirect("/artfolio");
-      });
+      })
     }
   })
+});
+
+app.post("/login",passport.authenticate("local",{
+  successRedirect:"/artfolio",
+  failureRedirect:"/login"
+}),(req,res)=>{});
+
+app.get("/logout",(req,res)=>{
+  req.logout();
+  console.log("loggedout");
+  res.redirect("/");
 })
-app.post("/login",(req,res)=>{
-  var user = req.body.user;
-    req.login(user,(e,s)=>{
-      if(e) {
-        res.redirect("/login");
-      }else{
-        passport.authenticate("local")(req,res,()=>{
-          res.redirect("/artfolio");
+
+app.get("/artfolio",authenticated,(req,res)=>{
+    Bio.findOne({userId:req.user._id},(e,s)=>{
+      if(e) console.log(e);
+      else{
+        Post.find({userId:req.user._id},(er,so)=>{
+          if(er) console.log(er);
+          else{
+            var user = {
+              bio:s,
+              post:so,
+              username:req.user.username,
+              id:req.user._id
+            }
+            res.render("index",{user:user});
+          }
         })
+
       }
-    })
+});
 });
 
-app.get("/artfolio",(req,res)=>{
-  // if(req.isAuthenticated()) {
-  User.findOne({username:"vishalreddy"}).populate("bio").populate("post").exec((e,s)=>{
-    if(e) console.log(e);
-    else{
-      console.log("populated==========",s);
-      res.render("index",{user:s});
-    }
-
-  })
-
-  // }else{
-  //   res.redirect("/login");
-  // }
-});
-
-app.get("/artfolio/:id/posts/new",(req,res)=>{
-  User.findOne({_id:req.params.id},(e,s)=>{
-    if(e) console.log(e);
-    else{
-      console.log(s);
-         var obj = {
-           username:s.username,
-           id:s._id
+app.get("/artfolio/:id/posts/new",authenticated,(req,res)=>{
+         var user = {
+           username:req.user.username,
+           id:req.user._id
          }
-         console.log("==========",obj);
-          res.render("postnew",{user:obj});
-    }
-  });
-});
+          res.render("postnew",{user:user});
+    });
 
-app.post("/artfolio/:id/posts",upload.single("image"),(req,res)=>{
-  console.log(req.file);
+app.post("/artfolio/:id/posts",authenticated,upload.single("image"),(req,res)=>{
    var post = req.body.post;
    post.src=req.file.location;
    post.key=req.file.key;
+   post.userId = req.user._id;
    Post.create(post,(e,s)=>{
       if(e) console.log(e);
       else{
-        User.findOne({_id:req.params.id},(err,sol)=>{
-           if(err) console.log(err);
-           else {
-             sol.post.push(s);
-             sol.save((error,so)=>{
-               if(error) console.log(error);
-               else{
-                 console.log(so);
                  res.redirect("/artfolio");
                }
-             })
+             });
+        });
 
-           }
-        })
-      }
-   })
-});
 
-app.get("/artfolio/:id1/posts/:id2/edit",(req,res)=>{
-  User.findOne({_id:req.params.id1},(e,s)=>{
-    if(e) console.log(e);
-    else{
-      console.log(s);
-      Post.findOne({_id:req.params.id2},(er,sol)=>{
+app.get("/artfolio/:id1/posts/:id2/edit",authenticated,(req,res)=>{
+      Post.findById(req.params.id2,(er,sol)=>{
         if(er) console.log(er);
         else{
           var obj = {
-            username:s.username,
-            id:req.params.id1,
+            username:req.user.username,
+            id:req.user._id,
             post:sol
           }
           console.log("==========",obj);
@@ -155,32 +136,31 @@ app.get("/artfolio/:id1/posts/:id2/edit",(req,res)=>{
         }
       })
 
-    }
-  });
-});
+    });
 
-app.patch("/artfolio/:id1/posts/:id2",(req,res)=>{
+app.patch("/artfolio/:id1/posts/:id2",authenticated,(req,res)=>{
   var post={};
   if(req.body.post.desc) {
     post.desc = req.body.post.desc;
   };
   post.title = req.body.post.title;
-  console.log(post["$set"]);
-  Post.findByIdAndUpdate({_id:req.params.id2},{$set:post},(e,s)=>{
+  console.log(post);
+  Post.findByIdAndUpdate(req.params.id2,post,(e,s)=>{
     if(e) console.log(e);
     else{
+      console.log(s);
       res.redirect("/artfolio");
     }
   })
 });
 
 
-app.delete("/artfolio/:id1/posts/:id2",(req,res)=>{
+app.delete("/artfolio/:id1/posts/:id2",authenticated,(req,res)=>{
   console.log("deleteeeee");
   Post.findById({_id:req.params.id2},(e,s)=>{
     if(e) console.log(e);
     else{
-      const params = {
+      var params = {
          Bucket: "artfolio-1408",
          Key: s.key
    };
@@ -200,57 +180,49 @@ app.delete("/artfolio/:id1/posts/:id2",(req,res)=>{
 });
 
 
-app.get("/artfolio/:id/bio/new",(req,res)=>{
-  User.findOne({_id:req.params.id},(e,s)=>{
-    if(e) console.log(e);
-    else{
-      res.render("bionew",{user:s});
-    }
-  })
-})
+app.get("/artfolio/:id/bio/new",authenticated,(req,res)=>{
+  var user = {
+    username:req.user.username,
+    id:req.user._id
+  }
+      res.render("bionew",{user:user});
+    });
 
-app.post("/artfolio/:id/bio",(req,res)=>{
+app.post("/artfolio/:id/bio",authenticated,upload.single("image"),(req,res)=>{
   var bio = req.body.bio;
   bio.src = req.file.location;
   bio.key = req.file.key;
+  bio.userId = req.user._id;
   Bio.create(bio,(error,sol)=>{
     if(error) console.log(error);
     else{
-      User.findOne({_id:req.params.id},(e,s)=>{
-        if(e) console.log(e);
-        else{
-          s.bio = sol;
-          s.save((er,so)=>{
-            if(er) console.log(er);
-            else{
               res.redirect("/artfolio");
             }
           })
-        }
-      })
-    }
-  })
+        });
 
+app.get("/artfolio/:id/bio/edit",authenticated,(req,res)=>{
+ Bio.findOne({userId:req.user._id},(er,so)=>{
+   if(er) console.log(er);
+   else{
+     var user = {
+       bio:so,
+       username:req.user.username,
+       id:req.user._id
+     }
+     res.render("bioedit",{user:user});
+   }
+ })
 });
 
-app.get("/artfolio/:id/bio/edit",(req,res)=>{
-  User.findOne({_id:req.params.id}).populate("bio").exec((er,so)=>{
+app.patch("/artfolio/:id/bio",authenticated,upload.single("image"),(req,res)=>{
+  Bio.findOne({userId:req.user._id},(er,bio)=>{
     if(er) console.log(er);
     else{
-      res.render("bioedit",{user:so});
-    }
-  })
-});
-
-app.patch("/artfolio/:id/bio",upload.single("image"),(req,res)=>{
-  User.findOne({_id:req.params.id},(er,so)=>{
-    if(er) console.log(er);
-    else{
-      var bio = {};
       if(req.file){
-        const params = {
+        var params = {
            Bucket: "artfolio-1408",
-           Key: so.bio.key
+           Key: bio.key,
      };
         s3.deleteObject(params,(r,sol)=>{
           if(r) console.log(r);
@@ -264,11 +236,8 @@ app.patch("/artfolio/:id/bio",upload.single("image"),(req,res)=>{
       if(req.body.bio.phone) bio.phone= req.body.bio.phone;
       if(req.body.bio.email) bio.email = req.body.bio.email
       if(req.body.bio.desc) bio.desc = req.body.bio.desc;
-
-
-
-      Bio.findByIdAndUpdate({_id:so.bio._id},bio,(e,s)=>{
-        if(e) console.log(e);
+      bio.save((error,solu)=>{
+        if(error) console.log(error);
         else{
           res.redirect("/artfolio");
         }
@@ -277,10 +246,38 @@ app.patch("/artfolio/:id/bio",upload.single("image"),(req,res)=>{
   })
 });
 
+app.get("/artfolio/:id/work",(req,res)=>{
+  Bio.findOne({userId:req.params.id},(e,s)=>{
+    if(e) console.log(e);
+    else{
+      Post.find({userId:req.params.id},(er,so)=>{
+        if(er) console.log(er);
+        else{
+          var user = {
+            bio:s,
+            post:so,
+            id:req.params.id
+          }
+          res.render("show",{user:user});
+        }
+      });
+    }
+  });
+});
 
 
 
 
+
+function authenticated(req,res,next){
+  if(req.isAuthenticated()) {
+    next();
+  }
+  else {
+    console.log("not authenticated");
+    res.redirect('login');
+    }
+}
 
 
 
@@ -290,4 +287,4 @@ let port = process.env.PORT;
 if(port==null||port=="") port = 3000;
 app.listen(port,function(){
   console.log(`Server started on - ${port}`);
-})
+});
