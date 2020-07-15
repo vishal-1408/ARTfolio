@@ -100,7 +100,7 @@ app.get("/artfolio",(req,res)=>{
       s.forEach(function(val){
         ids.push(val._id);
       });
-      // console.log(ids);
+      console.log(ids);
         Bio.find({userId:{
           $in: ids
         }},(er,so)=>{
@@ -111,6 +111,7 @@ app.get("/artfolio",(req,res)=>{
                  users:s,
                  bio:so
                }
+               console.log(obj);
               res.render("index",{obj:obj});
           }
         });
