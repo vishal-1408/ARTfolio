@@ -21,8 +21,8 @@ dotenv.config();
 mongoose.set("useCreateIndex",true);
 mongoose.set("useUnifiedTopology",true);
 mongoose.set("useNewUrlParser",true);
-// mongoose.connect("mongodb+srv://vishal:"+process.env.PASSWORD+"@cluster0.e3l8k.mongodb.net/artfolio");
-mongoose.connect("mongodb://localhost/artfolio");
+mongoose.connect("mongodb+srv://vishal:"+process.env.PASSWORD+"@cluster0.e3l8k.mongodb.net/artfolio");
+// mongoose.connect("mongodb://localhost/artfolio");
 
 app.use(bodyParser.urlencoded({extend:true}));
 app.set("view engine","ejs");
