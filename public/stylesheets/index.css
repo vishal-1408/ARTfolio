@@ -1,0 +1,45 @@
+body{
+  background: #f12711;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #f5af19, #f12711);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #f5af19, #f12711); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+
+.users{
+  background: white;
+  border-radius: 10px;
+  box-shadow: 3px 3px 30px rgba(0, 0, 0, 0.7);
+  transition: transform .4s;
+  margin-bottom: 5vw;
+
+}
+
+.users:hover{
+  -ms-transform: scale(1.5); /* IE 9 */
+-webkit-transform: scale(1.5); /* Safari 3-8 */
+transform: scale(1.2);
+}
+
+.bioimage img{
+  border-radius:50%;
+  height:14vw;
+  width:90%;
+}
+
+a{
+  text-decoration: none;
+  color:black;
+}
+
+a:hover{
+  text-decoration: none;
+  color:grey;
+}
+
+.row{
+
+  width:90%;
+  margin-left:5%;
+  margin-left: 5%;
+}

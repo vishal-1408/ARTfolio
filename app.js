@@ -22,6 +22,7 @@ mongoose.set("useCreateIndex",true);
 mongoose.set("useUnifiedTopology",true);
 mongoose.set("useNewUrlParser",true);
 mongoose.connect("mongodb+srv://vishal:"+process.env.PASSWORD+"@cluster0.e3l8k.mongodb.net/artfolio");
+// mongoose.connect("mongodb://localhost/artfolio");
 
 app.use(bodyParser.urlencoded({extend:true}));
 app.set("view engine","ejs");
@@ -37,7 +38,7 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(new localStrategy(User.authenticate()));
+passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
@@ -62,24 +63,64 @@ app.post("/register",function(req,res){
     }
     else{
       passport.authenticate("local")(req,res,()=>{
-        res.redirect("/artfolio");
+        res.redirect("/artfolio/"+req.user._id);
       })
     }
   })
 });
 
-app.post("/login",passport.authenticate("local",{
-  successRedirect:"/artfolio",
-  failureRedirect:"/login"
-}),(req,res)=>{});
+
+app.post("/login",(req,res)=>{
+  var user = new User({
+    username:req.body.username,
+    password:req.body.password,
+  });
+  req.login(user,(err,sol)=>{
+    if(err) console.log(err);
+    else{
+      passport.authenticate("local")(req,res,()=>{
+        res.redirect("/artfolio/"+req.user._id);
+      })
+    }
+  })
+})
+
 
 app.get("/logout",(req,res)=>{
   req.logout();
   console.log("loggedout");
   res.redirect("/");
+});
+
+app.get("/artfolio",(req,res)=>{
+  User.find({},(e,s)=>{
+    if(e) console.log(e);
+    else{
+      var ids= [];
+      s.forEach(function(val){
+        ids.push(val._id);
+      });
+      console.log(ids);
+        Bio.find({userId:{
+          $in: ids
+        }},(er,so)=>{
+          if(er) console.log(er);
+          else{
+               //console.log(so);
+               var obj = {
+                 users:s,
+                 bio:so
+               }
+              res.render("index",{obj:obj});
+          }
+        });
+
+    }
+  })
+
 })
 
-app.get("/artfolio",authenticated,(req,res)=>{
+app.get("/artfolio/:id",authenticated,(req,res)=>{
     Bio.findOne({userId:req.user._id},(e,s)=>{
       if(e) console.log(e);
       else{
@@ -92,7 +133,7 @@ app.get("/artfolio",authenticated,(req,res)=>{
               username:req.user.username,
               id:req.user._id
             }
-            res.render("index",{user:user});
+            res.render("showuser",{user:user});
           }
         })
 
@@ -116,7 +157,7 @@ app.post("/artfolio/:id/posts",authenticated,upload.single("image"),(req,res)=>{
    Post.create(post,(e,s)=>{
       if(e) console.log(e);
       else{
-                 res.redirect("/artfolio");
+              res.redirect("/artfolio/"+req.user._id);
                }
              });
         });
@@ -149,7 +190,7 @@ app.patch("/artfolio/:id1/posts/:id2",authenticated,(req,res)=>{
     if(e) console.log(e);
     else{
       console.log(s);
-      res.redirect("/artfolio");
+      res.redirect("/artfolio/"+req.user._id);
     }
   })
 });
@@ -170,7 +211,7 @@ app.delete("/artfolio/:id1/posts/:id2",authenticated,(req,res)=>{
              Post.deleteOne(s,(error)=>{
                if(error) console.log(error);
                else{
-                 res.redirect("/artfolio");
+                 res.redirect("/artfolio/"+req.user._id);
                }
              })
            }
@@ -196,7 +237,7 @@ app.post("/artfolio/:id/bio",authenticated,upload.single("image"),(req,res)=>{
   Bio.create(bio,(error,sol)=>{
     if(error) console.log(error);
     else{
-              res.redirect("/artfolio");
+            res.redirect("/artfolio/"+req.user._id);
             }
           })
         });
@@ -239,7 +280,7 @@ app.patch("/artfolio/:id/bio",authenticated,upload.single("image"),(req,res)=>{
       bio.save((error,solu)=>{
         if(error) console.log(error);
         else{
-          res.redirect("/artfolio");
+        res.redirect("/artfolio/"+req.user._id);
         }
       })
     }
