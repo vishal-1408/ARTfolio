@@ -28,16 +28,9 @@
        </ul>
   </div>
 </nav>
-
 <div class="container mt-2 mb-5" id="main">
   <div class="container one mt-4 " id="one">
    <div class="container mt-3 ml-4" id="two">
-     <% if(!user.bio){ %>
-       <div class="text-center">
-             <h4 class="mt-5">Your Bio is empty!!! Give an identtity for your Portfolio</h4>
-             <a href="/artfolio/<%=user.id%>/bio/new" class="btn btn-large btn-outline-primary mt-5">Add bio</a>
-       </div>
-     <% } else{ %>
         <div class="row">
           <div class="col-sm-12 col-md-4">
             <div class="bioimage my-4">
@@ -73,7 +66,6 @@
             </div>
           </div>
         </div>
-     <% } %>
    </div>
   </div>
 

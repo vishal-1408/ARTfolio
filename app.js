@@ -93,28 +93,16 @@ app.get("/logout",(req,res)=>{
 });
 
 app.get("/artfolio",(req,res)=>{
-  User.find({},(e,s)=>{
-    if(e) console.log(e);
-    else{
-      var ids= [];
-      s.forEach(function(val){
-        ids.push(val._id);
-      });
-      console.log(ids);
-        Bio.find({userId:{
-          $in: ids
-        }},(er,so)=>{
+        Bio.find({},(er,so)=>{
           if(er) console.log(er);
           else{
-               console.log();
-              res.render("index",{bio:so,users:s});
+               // console.log(so);
+              res.render("index",{bio:so});
           }
         });
 
-    }
   })
 
-})
 
 app.get("/artfolio/:id",authenticated,(req,res)=>{
     Bio.findOne({userId:req.user._id},(e,s)=>{
@@ -168,7 +156,7 @@ app.get("/artfolio/:id1/posts/:id2/edit",authenticated,(req,res)=>{
             id:req.user._id,
             post:sol
           }
-          console.log("==========",obj);
+        //  console.log("==========",obj);
            res.render("postedit",{obj:obj});
         }
       })
@@ -287,6 +275,7 @@ app.get("/:id/work",(req,res)=>{
   Bio.findOne({userId:req.params.id},(e,s)=>{
     if(e) console.log(e);
     else{
+      // console.log(s);
       Post.find({userId:req.params.id},(er,so)=>{
         if(er) console.log(er);
         else{
