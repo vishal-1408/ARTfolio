@@ -106,8 +106,8 @@ app.get("/artfolio",(req,res)=>{
         }},(er,so)=>{
           if(er) console.log(er);
           else{
-               //console.log(so);
-              res.render("index",{bio:bio,users:s});
+               console.log();
+              res.render("index",{bio:so,users:s});
           }
         });
 
