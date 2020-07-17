@@ -1,0 +1,12 @@
+
+//this week
+*if some input field is missed , dont show it on the bio page....
+* copy option for the link
+*like option for every post , and displaying total likes on the users div in artfolio page.
+* drag and drop for posts
+* search bar for artfolio page
+
+
+
+//later
+* finally end to end encrypted messaging functionality

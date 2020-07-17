@@ -9,7 +9,8 @@ var bioSchema = new mongoose.Schema({
   email: String,
   phone: String,
   key:String,
-  userId:String
+  userId:String,
+  link: [],
 });
 
 var Bio = mongoose.model("Bio",bioSchema);
