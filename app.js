@@ -301,7 +301,7 @@ function authenticated(req,res,next){
   }
   else {
     console.log("not authenticated");
-    res.redirect('login');
+    res.redirect('/login');
     }
 }
 
