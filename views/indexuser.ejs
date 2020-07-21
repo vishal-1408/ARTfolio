@@ -47,6 +47,7 @@
             </div>
         <%  } %>
             </div>
+        <%  if(user.bio.link[0]){ %>
           <div class="row my-3">
             <%  for(var i=0;i<=user.bio.link.length-1;i++){ %>
                       <div class="col-sm-12 col-md-2 yes">
@@ -54,6 +55,7 @@
                       </div>
               <%}%>
           </div>
+          <%} %>
             <div class="row">
               <div class="col-sm-12 col-md-11 mt-2 d-flex justify-content-end">
                  <a href="/artfolio/<%=user.id%>/bio/edit" class="btn btn-sm btn-outline-primary" id="bbtn">Edit Bio</a>

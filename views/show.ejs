@@ -70,15 +70,15 @@
             </div>
         <%  } %>
             </div>
-          <div class="row my-3">
-            <%  for(var i=0;i<=user.bio.link.length-1;i++){ %>
-
-                      <div class="col-sm-12 col-md-2">
-                        <a href="<%=user.bio.link[i].url%>" class="btn btn-sm btn-outline-success"><%=user.bio.link[i].name%></a>
-                      </div>
-
-              <%}%>
-          </div>
+            <%  if(user.bio.link[0]){ %>
+              <div class="row my-3">
+                <%  for(var i=0;i<=user.bio.link.length-1;i++){ %>
+                          <div class="col-sm-12 col-md-2 yes">
+                            <a href="<%=user.bio.link[i].url%>" class="btn btn-sm btn-outline-success"><%=user.bio.link[i].name%></a>
+                          </div>
+                  <%}%>
+              </div>
+              <%} %>
           </div>
         </div>
    </div>
