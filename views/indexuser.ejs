@@ -8,47 +8,52 @@
              <a href="/artfolio/<%=user.id%>/bio/new" class="btn btn-large btn-outline-primary mt-5">Add bio</a>
        </div>
      <% } else{ %>
-        <div class="row">
+        <div class="row py-2">
           <div class="col-sm-12 col-md-4">
             <div class="bioimage my-4">
               <img src="<%=user.bio.src%>" alt="profile pic" >
             </div>
           </div>
-          <div class="col-sm-12 col-md-8 my-2 ">
+          <div class="col-sm-12 col-md-8 ">
             <div class="row mt-4">
               <div class="col-sm-12">
                 <h2 class="display-4"><%=user.bio.name%></h2>
               </div>
             </div>
             <div class="row">
-              <div class="col-sm-12 mt-2 ml-2 word">
+              <div class="col-sm-12 mt-2 ml-1 word">
                 <p><%-user.bio.desc%></p>
               </div>
             </div>
             <div class="row">
             <%  if(user.bio.phone){ %>
-              <div class="col-sm-12 col-md-3 mt-1 ml-2">
+              <div class="col-sm-12 col-md-3 ml-1 mt-1">
                 <i class="fas fa-mobile-alt"></i> <a href="tel:<%=user.bio.phone%>" class="special">Phone</a>
               </div>
             <%  } %>
           <%  if(user.bio.email){ %>
-            <div class="col-sm-12 col-md-7 mt-1">
+            <div class="col-sm-12 col-md-3 mt-1">
               <i class="far fa-envelope"></i> <a href="mailto:<%=user.bio.email%>" class="special">Email</a>
             </div>
           <%}%>
+          <%  if(user.bio.fb){ %>
+            <div class="col-sm-12 col-md-2 " id="bone">
+              <a href="<%=user.bio.fb%>" class="text-reset"><i class="fab fa-facebook-f"></i></a>
             </div>
-            <div class="row">
-            <%  if(user.bio.fb){ %>
-              <div class="col-sm-12 col-md-1 mt-3 ml-2" id="bone">
-                <a href="<%=user.bio.fb%>" class="text-reset"><i class="fab fa-facebook-f"></i></a>
-              </div>
-            <%  } %>
-        <%  if(user.bio.insta){ %>
-              <div class="col-sm-12 col-md-1 mt-3" id="btwo">
-                <a href="<%=user.bio.insta%>" class="text-reset"><i class="fab fa-instagram"></i></a>
-              </div>
           <%  } %>
+      <%  if(user.bio.insta){ %>
+            <div class="col-sm-12 col-md-2" id="btwo">
+              <a href="<%=user.bio.insta%>" class="text-reset"><i class="fab fa-instagram"></i></a>
             </div>
+        <%  } %>
+            </div>
+          <div class="row my-3">
+            <%  for(var i=0;i<=user.bio.link.length-1;i++){ %>
+                      <div class="col-sm-12 col-md-2 yes">
+                        <a href="<%=user.bio.link[i].url%>" class="btn btn-sm btn-outline-success"><%=user.bio.link[i].name%></a>
+                      </div>
+              <%}%>
+          </div>
             <div class="row">
               <div class="col-sm-12 col-md-11 mt-2 d-flex justify-content-end">
                  <a href="/artfolio/<%=user.id%>/bio/edit" class="btn btn-sm btn-outline-primary" id="bbtn">Edit Bio</a>
@@ -65,13 +70,18 @@
       <hr>
   <%if(user.bio){%>
     <div class="container mb-3" id="down">
-      <div class="row">
-        <div class="col-sm-12 d-flex justify-content-around">
-          <p><i class="fas fa-share-square"></i>art-folio.herokuapp.com/<%=user.id%>/work <span class="copy"><i class="far fa-copy"></i></span></p>
-          <a href="/<%=user.id%>/work" class="btn btn-large btn-primary">Preview</a>
-          <a href="/artfolio/<%=user.id%>/posts/new" class="btn btn-large btn-success">Add a new work</a>
-        </div>
+      <div class="row d-flex align-items-center">
+      <div class="col-sm-12 col-md-4">
+        <p class="mt-3" class=""><i class="fas fa-share-square"></i> <input type="text" class="copytext" value="art-folio.herokuapp.com/<%=user.id%>/work" id="share"><span class="copy ml-1"><i class="far fa-copy"></i></span></p>
+
       </div>
+      <div class="col-sm-12 col-md-4">
+          <a href="/<%=user.id%>/work" class="btn btn-large btn-primary">Preview</a>
+      </div>
+        <div class="col-sm-12 col-md-4">
+          <a href="/artfolio/<%=user.id%>/posts/new" class="btn btn-large btn-success">Add a new work</a>
+      </div>
+        </div>
     </div>
   <div class="container three">
     <div class="rowgrid">
@@ -109,7 +119,15 @@
   </div>
   <%  } %>
 </div>
-
+<script>
+  var copy = document.querySelector(".copy");
+  var input = document.querySelector(".copytext");
+  copy.addEventListener("click",function(){
+    input.select();
+    input.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+  })
+</script>
 
 
 

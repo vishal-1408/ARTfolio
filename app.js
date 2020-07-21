@@ -218,9 +218,20 @@ app.post("/artfolio/:id/bio",authenticated,upload.single("image"),(req,res)=>{
   bio.src = req.file.location;
   bio.key = req.file.key;
   bio.userId = req.user._id;
+  bio.link = [];
+  var links = req.body.link;
+  console.log(link);
+  var link={},e;
+  for(var i=0;i<=links.length-1;i++){
+    e=links[i].split(",");
+    link.name=e[0];
+    link.url=e[1];
+    bio.link.push(link);
+  }
   Bio.create(bio,(error,sol)=>{
     if(error) console.log(error);
     else{
+          console.log(sol);
             res.redirect("/artfolio/"+req.user._id);
             }
           })
@@ -261,6 +272,18 @@ app.patch("/artfolio/:id/bio",authenticated,upload.single("image"),(req,res)=>{
       if(req.body.bio.phone) bio.phone= req.body.bio.phone;
       if(req.body.bio.email) bio.email = req.body.bio.email
       if(req.body.bio.desc) bio.desc = req.body.bio.desc;
+      if(req.body.link.length!=0){
+        bio.link=[];
+        var link={};
+        var e=[];
+        for(var i=0;i<=req.body.link.length-1;i++){
+          e=req.body.link[i].split(",");
+          link.name=e[0];
+          link.url=e[1];
+          bio.link[i]=link;
+        }
+      }
+
       bio.save((error,solu)=>{
         if(error) console.log(error);
         else{

@@ -10,7 +10,10 @@ var bioSchema = new mongoose.Schema({
   phone: String,
   key:String,
   userId:String,
-  link: [],
+  link: [{
+    name:String,
+    url:String
+  }],
 });
 
 var Bio = mongoose.model("Bio",bioSchema);

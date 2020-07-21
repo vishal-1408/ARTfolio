@@ -66,8 +66,8 @@
           <div class="container empty">
                 <div class="form-group two imp">
                   <div class="f mr-2 mb-4">
-                    <label for="p">Link</label>
-                    <input type="text" name="bio[link[0]]" placeholder="Link to showcase your works" id="p" class="form-control">
+                    <label for="p">Link of your work</label>
+                    <input type="text" name="link[0]" placeholder="Name of the website,url of the page" id="p" class="form-control">
                   </div>
                 </div>
                 <span class="d-inline-block mt-4">  <button class="btn btn-small btn-success" id="clickbtn"><i class="fas fa-plus"></i></button></span>
@@ -97,7 +97,7 @@
             var node = repeat.cloneNode(true);
             console.log(i);
             var cnodes = node.childNodes;
-            cnodes[1].childNodes[3].setAttribute("name","bio[link["+i+"]]");
+            cnodes[1].childNodes[3].setAttribute("name","link["+i+"]");
             console.log(cnodes[1].childNodes[3]);
             inc();
             empty.appendChild(node);

@@ -49,21 +49,36 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-sm-12 col-md-3 mt-1 ml-2">
+            <%  if(user.bio.phone){ %>
+              <div class="col-sm-12 col-md-3 mt-1">
                 <i class="fas fa-mobile-alt"></i> <a href="tel:<%=user.bio.phone%>" class="special">Phone</a>
               </div>
-              <div class="col-sm-12 col-md-7 mt-1">
-                <i class="far fa-envelope"></i> <a href="mailto:<%=user.bio.email%>" class="special">Email</a>
-              </div>
+            <%  } %>
+          <%  if(user.bio.email){ %>
+            <div class="col-sm-12 col-md-3 mt-1">
+              <i class="far fa-envelope"></i> <a href="mailto:<%=user.bio.email%>" class="special">Email</a>
             </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-1 mt-3 ml-2" id="bone">
-                <a href="<%=user.bio.fb%>" class="text-reset"><i class="fab fa-facebook-f"></i></a>
-              </div>
-              <div class="col-sm-12 col-md-1 mt-3" id="btwo">
-                <a href="<%=user.bio.insta%>" class="text-reset"><i class="fab fa-instagram"></i></a>
-              </div>
+          <%}%>
+          <%  if(user.bio.fb){ %>
+            <div class="col-sm-12 col-md-2 " id="bone">
+              <a href="<%=user.bio.fb%>" class="text-reset"><i class="fab fa-facebook-f"></i></a>
             </div>
+          <%  } %>
+      <%  if(user.bio.insta){ %>
+            <div class="col-sm-12 col-md-2" id="btwo">
+              <a href="<%=user.bio.insta%>" class="text-reset"><i class="fab fa-instagram"></i></a>
+            </div>
+        <%  } %>
+            </div>
+          <div class="row my-3">
+            <%  for(var i=0;i<=user.bio.link.length-1;i++){ %>
+
+                      <div class="col-sm-12 col-md-2">
+                        <a href="<%=user.bio.link[i].url%>" class="btn btn-sm btn-outline-success"><%=user.bio.link[i].name%></a>
+                      </div>
+
+              <%}%>
+          </div>
           </div>
         </div>
    </div>
